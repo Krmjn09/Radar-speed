@@ -1,13 +1,20 @@
-// pages/homepage.jsx
+// pages/homepage.tsx
+"use client"
+import { useState } from "react"
 import { UserButton } from "@clerk/nextjs"
-import Link from "next/link"
+import Image from "next/image"
 import logo from "../images/TIET-Logo.png"
+import Calendar from "../components/Calendar"
 import ThingSpeakChart from "../components/thinkspeak"
-import Image from "next/image" // Import the 'Image' component from the appropriate library
 
-const homepage = ({ children }: { children: React.ReactNode }) => {
+const Homepage = () => {
   const channelId = "2586394" // Replace with your ThingSpeak Channel ID
   const apiKey = "ONF0P9WIPWH2TLEB" // Replace with your ThingSpeak API Key
+  const [selectedDate, setSelectedDate] = useState(new Date())
+
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date)
+  }
 
   return (
     <div className="w-screen h-screen relative">
@@ -25,12 +32,13 @@ const homepage = ({ children }: { children: React.ReactNode }) => {
             </div>
           </nav>
         </header>
-        <div className="h-[calc(100vh-60px)] px-4 py-4">
-          <ThingSpeakChart channelId={channelId} apiKey={apiKey} />
+        <div className="p-4">
+          <Calendar onDateSelect={handleDateSelect} />
+          <ThingSpeakChart channelId={channelId} apiKey={apiKey} date={selectedDate} />
         </div>
       </div>
     </div>
   )
 }
 
-export default homepage
+export default Homepage
