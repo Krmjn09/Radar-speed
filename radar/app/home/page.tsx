@@ -6,7 +6,6 @@ import Image from "next/image"
 import logo from "../images/TIET-Logo.png"
 import Calendar from "../components/Calendar"
 import ThingSpeakChart from "../components/thinkspeak"
-
 const Homepage = () => {
   const channelId = "2586394" // Replace with your ThingSpeak Channel ID
   const apiKey = "ONF0P9WIPWH2TLEB" // Replace with your ThingSpeak API Key
@@ -32,9 +31,17 @@ const Homepage = () => {
             </div>
           </nav>
         </header>
-        <div className="p-4">
-          <Calendar onDateSelect={handleDateSelect} />
-          <ThingSpeakChart channelId={channelId} apiKey={apiKey} date={selectedDate} />
+        <div className="p-4 flex">
+          <div className="w-1/3">
+            <Calendar onDateSelect={handleDateSelect} />
+          </div>
+          <div className="flex-grow p-4">
+            <ThingSpeakChart
+              channelId={channelId}
+              apiKey={apiKey}
+              date={selectedDate}
+            />
+          </div>
         </div>
       </div>
     </div>

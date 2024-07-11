@@ -20,9 +20,23 @@ const Calendar = ({ onDateSelect }: { onDateSelect: (date: Date) => void }) => {
   const renderHeader = () => {
     return (
       <div className="flex justify-between items-center py-2">
-        <button onClick={prevMonth}>Prev</button>
-        <span>{format(currentMonth, "MMMM yyyy")}</span>
-        <button onClick={nextMonth}>Next</button>
+        <div className="flex space-x-2 items-center">
+          <button
+            className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-2 rounded"
+            onClick={prevMonth}
+          >
+            Prev
+          </button>
+          <button
+            className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-2 rounded mr-8 "
+            onClick={nextMonth}
+          >
+            Next
+          </button>
+          <span className="font-semibold text-lg ">
+            {format(currentMonth, "MMMM yyyy")}
+          </span>
+        </div>
       </div>
     )
   }
