@@ -1,10 +1,8 @@
-// components/ThingSpeakChart.tsx
-"use client"
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import { Line } from "react-chartjs-2"
 import "chart.js/auto"
-import { ChartData, ChartDataset } from "chart.js"
+import { ChartData, ChartDataset, PluginOptionsByType } from "chart.js"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
@@ -15,13 +13,17 @@ dayjs.extend(timezone)
 interface ThingSpeakChartProps {
   channelId: string
   apiKey: string
-  date: Date
+  date?: Date
+  startDate?: Date
+  endDate?: Date
 }
 
 const ThingSpeakChart: React.FC<ThingSpeakChartProps> = ({
   channelId,
   apiKey,
   date,
+  startDate,
+  endDate,
 }) => {
   const [chartData, setChartData] = useState<ChartData<
     "line",
@@ -32,9 +34,21 @@ const ThingSpeakChart: React.FC<ThingSpeakChartProps> = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      const formattedDate = dayjs(date).tz("Asia/Kolkata").format("YYYY-MM-DD")
-      const startOfDay = `${formattedDate} 00:00:00`
-      const endOfDay = `${formattedDate} 23:59:59`
+      let startOfDay = ""
+      let endOfDay = ""
+
+      if (date) {
+        const formattedDate = dayjs(date)
+          .tz("Asia/Kolkata")
+          .format("YYYY-MM-DD")
+        startOfDay = `${formattedDate} 00:00:00`
+        endOfDay = `${formattedDate} 23:59:59`
+      } else if (startDate && endDate) {
+        startOfDay =
+          dayjs(startDate).tz("Asia/Kolkata").format("YYYY-MM-DD") + " 00:00:00"
+        endOfDay =
+          dayjs(endDate).tz("Asia/Kolkata").format("YYYY-MM-DD") + " 23:59:59"
+      }
 
       const response = await axios.get(
         `https://api.thingspeak.com/channels/${channelId}/feeds.json`,
@@ -52,7 +66,7 @@ const ThingSpeakChart: React.FC<ThingSpeakChartProps> = ({
         dayjs(feed.created_at).tz("Asia/Kolkata").format("HH:mm:ss")
       )
       const data = feeds.map((feed: any) => parseFloat(feed.field1))
-      const count = data.filter((value: number) => value > 30).length
+      const count = data.filter((value: number) => value > 25).length
 
       setChartData({
         labels,
@@ -70,7 +84,29 @@ const ThingSpeakChart: React.FC<ThingSpeakChartProps> = ({
     }
 
     fetchData()
-  }, [channelId, apiKey, date])
+  }, [channelId, apiKey, date, startDate, endDate])
+
+  const dateText = date
+    ? dayjs(date).tz("Asia/Kolkata").format("YYYY-MM-DD")
+    : `${dayjs(startDate).tz("Asia/Kolkata").format("YYYY-MM-DD")} - ${dayjs(
+        endDate
+      )
+        .tz("Asia/Kolkata")
+        .format("YYYY-MM-DD")}`
+
+  const customPlugin = {
+    id: "customCanvasBackgroundColor",
+    beforeDraw: (chart: any) => {
+      const ctx = chart.ctx
+      const { width, height } = chart.chartArea
+      ctx.save()
+      ctx.font = "16px Arial"
+      ctx.fillStyle = "black"
+      ctx.textAlign = "right"
+      ctx.fillText(dateText, width - 10, 20)
+      ctx.restore()
+    },
+  }
 
   return (
     <div className="p-4">
@@ -99,6 +135,20 @@ const ThingSpeakChart: React.FC<ThingSpeakChartProps> = ({
                 },
               },
             },
+            plugins: {
+              customCanvasBackgroundColor: {
+                beforeDraw: (chart: any) => {
+                  const ctx = chart.ctx
+                  const { width, height } = chart.chartArea
+                  ctx.save()
+                  ctx.font = "16px Arial"
+                  ctx.fillStyle = "black"
+                  ctx.textAlign = "right"
+                  ctx.fillText(dateText, width - 10, 20)
+                  ctx.restore()
+                },
+              },
+            } as unknown as PluginOptionsByType<"line">,
           }}
         />
       ) : (
