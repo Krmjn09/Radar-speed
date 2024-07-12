@@ -110,8 +110,11 @@ const ThingSpeakChart: React.FC<ThingSpeakChartProps> = ({
 
   return (
     <div className="p-4">
-      <div className="mb-4">
-        <h3>Number of Overspeeding Vehicles: {overspeedingCount}</h3>
+      <div className="mb-4 ml-3">
+        <h3 className="font-bold  bg-blue-100 ">
+          Number of Overspeeding Vehicles:{" "}
+          <span className="font-bold">{overspeedingCount}</span>
+        </h3>
       </div>
       {chartData ? (
         <Line
