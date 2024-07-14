@@ -63,7 +63,7 @@ const ThingSpeakChart: React.FC<ThingSpeakChartProps> = ({
 
       const feeds = response.data.feeds
       const labels = feeds.map((feed: any) =>
-        dayjs(feed.created_at).tz("Asia/Kolkata").format("HH:mm:ss")
+        dayjs(feed.created_at).tz("Asia/Kolkata").format("DD-MM   hh:mmA")
       )
       const data = feeds.map((feed: any) => parseFloat(feed.field1))
       const count = data.filter((value: number) => value > 25).length
@@ -111,7 +111,7 @@ const ThingSpeakChart: React.FC<ThingSpeakChartProps> = ({
   return (
     <div className="p-4">
       <div className="mb-4 ml-3">
-        <h3 className="font-bold  bg-blue-100 ">
+        <h3 className="font-bold bg-blue-100">
           Number of Overspeeding Vehicles:{" "}
           <span className="font-bold">{overspeedingCount}</span>
         </h3>
@@ -125,32 +125,44 @@ const ThingSpeakChart: React.FC<ThingSpeakChartProps> = ({
                 title: {
                   display: true,
                   text: "Time",
+                  font: {
+                    size: 20,
+                  },
+                  color: "black",
                 },
                 ticks: {
                   maxRotation: 90,
-                  minRotation: 45,
+                  minRotation: 30,
+                  callback: function (value, index, values) {
+                    return chartData.labels
+                      ? chartData.labels[index].replace(" ", "   ")
+                      : ""
+                  },
+                  font: {
+                    size: 9,
+                    weight: "bold",
+                  },
                 },
               },
               y: {
                 title: {
                   display: true,
-                  text: "Speed",
+                  text: "Speed (km/h)",
+                  font: {
+                    size: 20,
+                  },
+                  color: "black",
+                },
+                ticks: {
+                  font: {
+                    size: 12,
+                    weight: "bold",
+                  },
                 },
               },
             },
             plugins: {
-              customCanvasBackgroundColor: {
-                beforeDraw: (chart: any) => {
-                  const ctx = chart.ctx
-                  const { width, height } = chart.chartArea
-                  ctx.save()
-                  ctx.font = "16px Arial"
-                  ctx.fillStyle = "black"
-                  ctx.textAlign = "right"
-                  ctx.fillText(dateText, width - 10, 20)
-                  ctx.restore()
-                },
-              },
+              customCanvasBackgroundColor: customPlugin,
             } as unknown as PluginOptionsByType<"line">,
           }}
         />

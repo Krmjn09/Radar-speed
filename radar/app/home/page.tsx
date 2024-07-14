@@ -49,7 +49,9 @@ const Homepage = () => {
       </aside>
       <div className="ml-[80px] sm:ml-[100px] h-full w-[calc(100vw-80px)] sm:w-[calc(100vw-100px)]">
         <header className="h-[50px] sm:h-[60px] border-b border-black/10 flex justify-between items-center px-2 sm:px-4">
-          <h1 className="text-xl sm:text-2xl">Speed Detection</h1>
+          <h1 className="text-xl sm:text-1xl">
+            Speed Detection System Of Thapar
+          </h1>
           <nav className="h-full">
             <div className="flex items-center justify-end h-full">
               <UserButton afterSignOutUrl="/" />
@@ -61,7 +63,7 @@ const Homepage = () => {
             <Calendar onDateSelect={handleDateSelect} />
             <button
               onClick={openDateRangePicker}
-              className="bg-blue-500 text-white ml-7 px-3 py-2 rounded mt-w-full "
+              className="bg-blue-500 text-white ml-7 px-3 py-2 rounded mt-w-full mt-10"
               disabled={activeComponent === "calendar"}
             >
               Date Range

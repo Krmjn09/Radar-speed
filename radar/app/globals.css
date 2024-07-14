@@ -2,7 +2,6 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-
 html,
 body,
 #__next {
@@ -23,7 +22,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 1000px) {
   .flex-col {
     flex-direction: column;
   }
@@ -37,7 +36,7 @@ button:disabled {
   }
 }
 
-@media (min-width: 641px) {
+@media (min-width: 1001px) {
   .flex-row {
     flex-direction: row !important;
   }

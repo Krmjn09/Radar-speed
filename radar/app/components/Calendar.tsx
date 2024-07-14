@@ -19,7 +19,7 @@ const Calendar = ({ onDateSelect }: { onDateSelect: (date: Date) => void }) => {
   const renderHeader = () => {
     return (
       <div className="flex justify-between items-center py-2">
-        <div className="flex space-x-2 items-center">
+        <div className="flex space-x-7 items-center">
           <button
             className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-2 rounded"
             onClick={prevMonth}
@@ -27,7 +27,7 @@ const Calendar = ({ onDateSelect }: { onDateSelect: (date: Date) => void }) => {
             Prev
           </button>
           <button
-            className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-2 rounded mr-8 "
+            className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-2 rounded "
             onClick={nextMonth}
           >
             Next
@@ -46,7 +46,7 @@ const Calendar = ({ onDateSelect }: { onDateSelect: (date: Date) => void }) => {
 
     for (let i = 0; i < 7; i++) {
       days.push(
-        <div className="w-10 h-10 flex items-center justify-center" key={i}>
+        <div className="w-10 h-10 flex items-center justify-center " key={i}>
           {format(addDays(startDate, i), "EEE")}
         </div>
       )
@@ -72,7 +72,7 @@ const Calendar = ({ onDateSelect }: { onDateSelect: (date: Date) => void }) => {
         const cloneDay = day
         days.push(
           <div
-            className={`w-10 h-10 flex items-center justify-center ${
+            className={`w-10 h-10 flex items-center justify-center cursor-pointer ${
               !isSameMonth(day, monthStart)
                 ? "text-gray-400"
                 : isSameDay(day, selectedDate)
